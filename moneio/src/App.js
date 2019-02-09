@@ -1,13 +1,20 @@
 import React, { Component } from 'react'
-import './styles/App.css'
+import { Route, Switch } from 'react-router';
+import Home from './components/presentational/Home'
 import Header from './components/presentational/Header'
+import Submit from './components/presentational/Submit'
+import './styles/App.css'
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
+      <>
         <Header />
-      </div>
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/submit" component={Submit} />
+        </Switch>
+      </>
     )
   }
 }

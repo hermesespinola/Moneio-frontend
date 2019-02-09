@@ -22,6 +22,14 @@
   color: #61dafb;
 }
 
+body, input, select, textarea {
+  color: #444;
+  font-family: "Lato", Helvetica, sans-serif;
+  font-size: 15pt;
+  font-weight: 300;
+  line-height: 1.65em;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -29,4 +37,49 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+input[type="submit"], input[type="reset"], input[type="button"], .button {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  -o-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+  -moz-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  -webkit-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  -o-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  -ms-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  background-color: #3ba666;
+  border-radius: 4px;
+  border: 0;
+  color: #ffffff !important;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 400;
+  height: 2.85em;
+  line-height: 2.8em;
+  padding: 0 2em;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  font-style: inherit;
+  font-variant-ligatures: inherit;
+  font-variant-caps: inherit;
+  font-variant-numeric: inherit;
+  font-variant-east-asian: inherit;
+  font-weight: inherit;
+  font-stretch: inherit;
+  font-size: 100%;
+  line-height: inherit;
+  font-family: inherit;
+  vertical-align: baseline;
 }

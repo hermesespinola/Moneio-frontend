@@ -1,18 +1,20 @@
 import React from 'react'
-import { Switch, Route } from 'react-router'
+import { Link } from 'react-router-dom'
+import '../../styles/Header.css'
 
 const Header = () => (
-    <header id="header">
-        <Switch>
-            <Route path="/"><h1>Money.io</h1></Route>
-            <nav id="nav">
-                <ul>
-                    <li><Route path="/">Signup</Route></li>
-                    <li><Route path="#">Expore</Route></li>
-                    <li><Route path="#">Submit</Route></li>
-                </ul>
-            </nav>
-        </Switch>
+    <header
+      id="header"
+      className={`header${window.location.pathname === '/' ? '-home' : ''}`}
+    >
+      <h1><Link to="/">Where's benito</Link></h1>
+      <nav id="nav">
+        <ul>
+          <li><Link to="/">Signup</Link></li>
+          <li><Link to="#">Expore</Link></li>
+          <li><Link to="/submit">Submit</Link></li>
+        </ul>
+      </nav>
     </header>
 )
 

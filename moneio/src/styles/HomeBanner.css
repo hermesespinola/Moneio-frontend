@@ -1,0 +1,58 @@
+#banner {
+    padding: 12em 2em 10em;
+}
+#banner {
+    padding: 12em 0em 10em;
+}
+#banner {
+    background: url(../images/overlay.png), url(../images/banner.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: #ffffff;
+    padding: 16em 0em 14em;
+    text-align: center;
+}
+
+#banner h2 {
+    font-size: 3.5em;
+}
+#banner h2 {
+    color: #ffffff;
+    font-size: 3em;
+    line-height: 1em;
+    margin: 0 0 0.5em 0;
+    padding: 0;
+}
+h2 {
+    font-size: 1.75em;
+    line-height: 1.5em;
+}
+h1, h2, h3, h4, h5, h6 {
+    color: #666;
+    font-weight: 300;
+    line-height: 1em;
+    margin: 0 0 1em 0;
+}
+#banner p {
+    font-size: 1.5em;
+    margin: 1.5em 0 0 0;
+}
+#banner .button {
+    background-color: transparent;
+    border: 1px solid #ffffff;
+    font-weight: 300;
+}
+#banner .actions {
+    margin: 3em 0 0 0;
+}
+
+#banner .button {
+    background-color: transparent;
+    border: 1px solid #ffffff;
+    font-weight: 300;
+}
+
+    #banner .button:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
