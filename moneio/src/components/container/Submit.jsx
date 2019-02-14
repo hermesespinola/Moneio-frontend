@@ -61,12 +61,12 @@ const Submit = () => {
           Pick an image of the bill:
           <input
             type="file"
+            ref={inputImage}
             accept="image/*"
           />
         </label>
         <input
           type="submit"
-          ref={inputImage}
           value="Submit"
           disabled={isSubmitting}
         />
