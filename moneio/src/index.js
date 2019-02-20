@@ -1,10 +1,13 @@
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import ReactDOM from 'react-dom'
+import dotenv from 'dotenv'
 
 import './styles/index.css'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
+
+dotenv.config()
 
 ReactDOM.render((
     <BrowserRouter>

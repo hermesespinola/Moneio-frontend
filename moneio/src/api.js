@@ -28,8 +28,8 @@ export const fetchEntries = async (serialCode) => {
     return [
       {
         coords: {
-          latitude: 20.6387878,
-          longitude: -103.4298847,
+          latitude: 52.496912,
+          longitude: 13.436738,
         },
         date: 'Sun Feb 10 2019 17:18:06',
         image: 'https://static.vix.com/es/sites/default/files/styles/large/public/btg/curiosidades.batanga.com/files/Que-figuras-historicas-estan-en-los-billetes-de-Mexico-01.png?itok=kGQNOmbs',
