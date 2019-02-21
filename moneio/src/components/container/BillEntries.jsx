@@ -24,7 +24,7 @@ const BillEntries = ({ match }) => {
         <EntriesMap entries={entries} />
         <BillEntriesHeader serialCode={serialCode} />
         {entries.map((entry, id) => (
-          <BillEntry {...entry} serialCode={serialCode}  key={id} />
+          <BillEntry {...entry} serialCode={serialCode} key={id} />
         ))}
       </div>
     ) : (
