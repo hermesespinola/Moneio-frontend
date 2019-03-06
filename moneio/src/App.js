@@ -12,12 +12,20 @@ class App extends Component {
     return (
       <>
         <Header />
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route exact path="/submit" component={Submit} />
-          <Route exact path="/explore" component={Explore} />
-          <Route path="/entries/:serialCode" component={BillEntries} />
-        </Switch>
+        <div style={{
+          justifyContent: 'center',
+          maxWidth: '1280px',
+          width: '80vw',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+        }}>
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route exact path="/submit" component={Submit} />
+            <Route exact path="/explore" component={Explore} />
+            <Route path="/entries/:serialCode" component={BillEntries} />
+          </Switch>
+        </div>
       </>
     )
   }

@@ -1,9 +1,11 @@
 const apiURL = process.env.API_URL
 console.log('API_URL:', apiURL);
 
-export const submitForm = ({ serialCode, notes, coords, image }) => {
+// TODO: include denomination
+export const submitForm = (serialCode, notes, coords, image, denomination) => {
   const formData = new FormData()
   formData.append('serialCode', serialCode)
+  formData.append('denomination', denomination)
   if (notes && typeof notes === 'string') formData.append('notes', notes)
   if (coords && typeof coords === 'object') formData.append('coords', coords)
   if (image && typeof image === 'object') formData.append('image', image)

@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react'
 import { submitForm } from '../../api'
+import '../../styles/Submit.css'
 
 // TODO: input formating and validation
 const Submit = () => {
@@ -9,6 +10,7 @@ const Submit = () => {
   const [submitted, setSubmitted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const inputImage = useRef(null)
+  const [denomination, setDenomination] = useState(20)
 
   const handleSubmit = (event: Event) => {
     event.preventDefault()
@@ -17,7 +19,7 @@ const Submit = () => {
       navigator.geolocation.getCurrentPosition(
         async ({ coords }) => {
           try {
-            submitForm(serialCode, notes, coords, inputImage.current.files[0])
+            submitForm(serialCode, notes, coords, inputImage.current.files[0], denomination)
             setSubmitted(true)
             setIsSubmitting(false)
           } catch(err) {
@@ -49,6 +51,23 @@ const Submit = () => {
           />
         </label>
         <label>
+          Denomination:
+          <select
+            required
+            value={denomination}
+            onChange={({ target }) => {
+              setDenomination(Number.parseInt(target.value))
+            }}
+          >
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+            <option value="200">200</option>
+            <option value="500">500</option>
+            <option value="1000">1000</option>
+          </select>
+        </label>
+        <label>
           Notes:
           <textarea
             value={notes}
@@ -66,6 +85,7 @@ const Submit = () => {
           />
         </label>
         <input
+          className="submit"
           type="submit"
           value="Submit"
           disabled={isSubmitting}
