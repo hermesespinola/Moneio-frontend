@@ -1,4 +1,5 @@
 import React from 'react'
+import '../../styles/BillEntriesHeader.css'
 
 const BillEntriesHeader = ({ serialCode }) => (
   <>

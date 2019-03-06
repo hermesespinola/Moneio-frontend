@@ -1,0 +1,14 @@
+.bill-entries-title {
+  font-size: 25px;
+  text-align: center;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.bill-entries-header {
+  margin-top: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  font-weight: bold;
+}
