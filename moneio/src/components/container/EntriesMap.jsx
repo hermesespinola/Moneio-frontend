@@ -3,8 +3,8 @@ import L from 'leaflet'
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
 import '../../styles/EntriesMap.css'
 
-import icon from '../../images/money-icon.png';
-import iconShadow from 'leaflet/dist/images/marker-shadow.png';
+import icon from '../../images/money-icon.png'
+import iconShadow from 'leaflet/dist/images/marker-shadow.png'
 
 let DefaultIcon = L.icon({
   iconUrl: icon,
@@ -14,9 +14,9 @@ let DefaultIcon = L.icon({
   iconAnchor: [19, 38],
   shadowAnchor: [5, 38],
   popupAnchor: [0, -38]
-});
+})
 
-L.Marker.prototype.options.icon = DefaultIcon;
+L.Marker.prototype.options.icon = DefaultIcon
 
 const toLatLng = ({ latitude, longitude }) => [latitude, longitude]
 
