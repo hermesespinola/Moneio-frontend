@@ -1,4 +1,5 @@
 import React from 'react'
+import '../../styles/BillEntry.css'
 
 const BillEntry = ({ serialCode, coords, image, notes, date }) => (
   <div className="entry">
@@ -12,8 +13,8 @@ const BillEntry = ({ serialCode, coords, image, notes, date }) => (
     <div className="entry-notes">
       <p>{notes}</p>
     </div>
-    <div className="entry-image">
-      <img src={image} alt={`bill ${serialCode}, entry from ${date}`}/>
+    <div>
+      <img className="entry-image" src={image} alt={`bill ${serialCode}, entry from ${date}`}/>
     </div>
   </div>
 )

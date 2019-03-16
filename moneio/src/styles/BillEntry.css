@@ -1,0 +1,8 @@
+.entry {
+  display: flex;
+  justify-content: space-around;
+}
+
+.entry-image {
+  width: auto;
+}
