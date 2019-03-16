@@ -1,14 +1,34 @@
 import React from 'react'
-import { Map, TileLayer, Marker } from 'react-leaflet'
+import L from 'leaflet'
+import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
 import '../../styles/EntriesMap.css'
+
+import icon from '../../images/money-icon.png'
+import iconShadow from 'leaflet/dist/images/marker-shadow.png'
+
+let DefaultIcon = L.icon({
+  iconUrl: icon,
+  shadowUrl: iconShadow,
+  iconSize: [38, 38],
+  shadowSize: [38, 38],
+  iconAnchor: [19, 38],
+  shadowAnchor: [5, 38],
+  popupAnchor: [0, -38]
+})
+
+L.Marker.prototype.options.icon = DefaultIcon
 
 const toLatLng = ({ latitude, longitude }) => [latitude, longitude]
 
 const EntriesMap = ({ attribution, entries, url }) => (
   <Map center={[52.499219, 13.425416]} zoom={8}>
     <TileLayer url={url} attribution={attribution} />
-    {entries.map(entry => (
-      <Marker key={`map-marker-${entry.serialCode}`} position={toLatLng(entry.coords)} />
+    {entries.map((entry, i) => (
+      <Marker key={`marker-${i}`} position={toLatLng(entry.coords)}>
+        <Popup>
+          Este dinero nace en <a href="https://www.facebook.com/CarlosRueda48">Jalisco</a>
+        </Popup>
+    </Marker>
     ))}
   </Map>
 )
