@@ -9,7 +9,7 @@ export const submitForm = (serialCode, notes, latitude, longitude, image, denomi
 
   var formData = new FormData()
   formData.append('serialCode', serialCode)
-  formData.append('denomination', 20)
+  formData.append('denomination', denomination)
   if (notes && typeof notes === 'string') formData.append('notes', notes)
   if (latitude && typeof latitude === 'number') formData.append('latitude', latitude)
   if (longitude && typeof longitude === 'number') formData.append('longitude', longitude)
