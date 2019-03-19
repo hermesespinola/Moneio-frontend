@@ -1,14 +1,14 @@
 import React from 'react'
 import '../../styles/BillEntry.css'
 
-const BillEntry = ({ serialCode, coords, image, notes, date }) => (
+const BillEntry = ({ serialCode, latitude, longitude, image, notes, date }) => (
   <div className="entry">
     <div className="entry-date">
       <time>{date}</time>
     </div>
     <div className="entry-coordinates">
-      <span>lat: {coords.latitude}</span>
-      <span>lng: {coords.longitude}</span>
+      <span>lat: {latitude}</span>
+      <span>lng: {longitude}</span>
     </div>
     <div className="entry-notes">
       <p>{notes}</p>

@@ -18,15 +18,14 @@ let DefaultIcon = L.icon({
 
 L.Marker.prototype.options.icon = DefaultIcon
 
-const toLatLng = ({ latitude, longitude }) => [latitude, longitude]
 
 const EntriesMap = ({ attribution, entries, url }) => (
   <Map center={[52.499219, 13.425416]} zoom={8}>
     <TileLayer url={url} attribution={attribution} />
-    {entries.map((entry, i) => (
-      <Marker key={`marker-${i}`} position={toLatLng(entry.coords)}>
+    {entries.map(({ latitude, longitude, serialCode, date }, i) => (
+      <Marker key={`marker-${i}`} position={[latitude, longitude]}>
         <Popup>
-          Este dinero nace en <a href="https://www.facebook.com/CarlosRueda48">Jalisco</a>
+          <b style={{ fontWeight: 'bold' }}>{serialCode}</b>: {date}
         </Popup>
     </Marker>
     ))}

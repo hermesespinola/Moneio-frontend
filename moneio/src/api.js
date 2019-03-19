@@ -20,40 +20,26 @@ export const submitForm = (form, latitude, longitude) => {
   })
 }
 
-export const fetchExplore = async (option) => {
+export const fetchEntries = async (serialCode, pageSize = 5, page = 0) => {
   if (!apiURL) {
-    return [
-      {
-        latitude: 52.496912,
-        longitude: 13.436738,
-        date: 'Sun Feb 10 2019 17:18:06',
-        image: 'https://static.vix.com/es/sites/default/files/styles/large/public/btg/curiosidades.batanga.com/files/Que-figuras-historicas-estan-en-los-billetes-de-Mexico-01.png?itok=kGQNOmbs',
-        notes: 'Este es es benito, sus amiguitos son María, Nezahualcóyotl, Sor Juana, el buen Diego Rivera y Frida Kalho, y como olvidar a Miguel Hidalgo.',
-        serialCode: 'D2356-534-53',
-      },
-    ]
+    return {
+      pages: Math.ceil(1 / pageSize),
+      rows: [{
+          latitude: 52.496912,
+          longitude: 13.436738,
+          date: 'Sun Feb 10 2019 17:18:06',
+          image: 'https://static.vix.com/es/sites/default/files/styles/large/public/btg/curiosidades.batanga.com/files/Que-figuras-historicas-estan-en-los-billetes-de-Mexico-01.png?itok=kGQNOmbs',
+          notes: 'Este es es benito, sus amiguitos son María, Nezahualcóyotl, Sor Juana, el buen Diego Rivera y Frida Kalho, y como olvidar a Miguel Hidalgo.',
+          serialCode: serialCode || 'abcdefg-1',
+        }]
+    }
   }
-  return await fetch(`${apiURL}/explore/${option}`, {
+  let url = `${apiURL}/entries`
+  if (serialCode) {
+    url = `${url}/${serialCode}`
+  }
+  return await fetch(`${url}?pageSize=${pageSize}?page=${page}`, {
     method: 'GET',
   })
-  .then(res => res.json())
-}
-
-export const fetchEntries = async (serialCode) => {
-  if (!apiURL) {
-    return [
-      {
-        latitude: 52.496912,
-        longitude: 13.436738,
-        date: 'Sun Feb 10 2019 17:18:06',
-        image: 'https://static.vix.com/es/sites/default/files/styles/large/public/btg/curiosidades.batanga.com/files/Que-figuras-historicas-estan-en-los-billetes-de-Mexico-01.png?itok=kGQNOmbs',
-        notes: 'Este es es benito, sus amiguitos son María, Nezahualcóyotl, Sor Juana, el buen Diego Rivera y Frida Kalho, y como olvidar a Miguel Hidalgo.',
-        serialCode,
-      },
-    ]
-  }
-  return await fetch(`${apiURL}/entries/${serialCode}`, {
-    method: 'GET',
-  })
-  .then(res => res.json())
+    .then(res => res.json())
 }
