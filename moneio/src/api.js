@@ -1,14 +1,10 @@
 const apiURL = process.env.REACT_APP_API_URL
 console.log('API_URL:', apiURL)
 
-export const submitForm = (serialCode, notes, latitude, longitude, image, denomination) => {
-  const formData = new FormData()
-  formData.append('serialCode', serialCode)
-  formData.append('denomination', denomination)
-  if (notes && typeof notes === 'string') formData.append('notes', notes)
+export const submitForm = (form, latitude, longitude) => {
+  const formData = new FormData(form)
   if (latitude && typeof latitude === 'number') formData.append('latitude', latitude)
   if (longitude && typeof longitude === 'number') formData.append('longitude', longitude)
-  if (image && typeof image === 'object') formData.append('image', image)
  
   if (!apiURL) {
     // Mock some data
