@@ -1,26 +1,14 @@
-const apiURL = process.env.API_URL ? process.env.API_URL : "http://127.0.0.1:8080";
-console.log('API_URL:', apiURL);
+const apiURL = process.env.REACT_APP_API_URL
+console.log('API_URL:', apiURL)
 
-// TODO: include denomination
 export const submitForm = (serialCode, notes, latitude, longitude, image, denomination) => {
-  console.log("SERIAL CODE AND DENOMINATION")
-  console.log(serialCode)
-  console.log(denomination)
-
-  var formData = new FormData()
+  const formData = new FormData()
   formData.append('serialCode', serialCode)
   formData.append('denomination', denomination)
   if (notes && typeof notes === 'string') formData.append('notes', notes)
   if (latitude && typeof latitude === 'number') formData.append('latitude', latitude)
   if (longitude && typeof longitude === 'number') formData.append('longitude', longitude)
   if (image && typeof image === 'object') formData.append('image', image)
-  for (var key of formData.keys()) {
-    console.log(key); 
-  }
-  for (var value of formData.values()) {
-    console.log(value); 
-  }
-  //foreach (let entry : formData.entries()) {
  
   if (!apiURL) {
     // Mock some data
