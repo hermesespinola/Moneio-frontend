@@ -19,7 +19,7 @@ const Submit = () => {
       navigator.geolocation.getCurrentPosition(
         async ({ coords }) => {
           try {
-            submitForm(serialCode, notes, coords, inputImage.current.files[0], denomination)
+            submitForm(serialCode, notes, coords.latitude, coords.longitude, inputImage.current.files[0], denomination)
             setSubmitted(true)
             setIsSubmitting(false)
           } catch(err) {
