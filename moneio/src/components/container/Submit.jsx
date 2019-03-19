@@ -9,6 +9,7 @@ const Submit = () => {
   // Form state
   const [submitted, setSubmitted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
   const billForm = useRef(null)
 
   const handleSubmit = (event: Event) => {
@@ -18,7 +19,10 @@ const Submit = () => {
       navigator.geolocation.getCurrentPosition(
         async ({ coords }) => {
           try {
-            submitForm(billForm.current, coords.latitude, coords.longitude)
+            const res = await submitForm(billForm.current, coords.latitude, coords.longitude)
+            if (res.status !== 200) {
+              setErrorMessage(await res.text())
+            }
             setSubmitted(true)
             setIsSubmitting(false)
           } catch(err) {
@@ -35,7 +39,9 @@ const Submit = () => {
     }
   }
 
-  return submitted ? (<p>Thanks for your submission!</p>) : (
+  return submitted ? (
+      <p>{errorMessage || 'Thanks for your submission!'}</p>
+  ) : (
     <div className="form-submit">
       <form ref={billForm} onSubmit={handleSubmit}>
         <label>
