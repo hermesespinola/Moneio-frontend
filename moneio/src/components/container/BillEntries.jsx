@@ -14,7 +14,7 @@ const serialCodeColumn = {
 
 const getColumns = (serialCode) => [...(serialCode ? [serialCodeColumn] : []), {
   Header: 'Date',
-  accessor: 'date',
+  accessor: 'currentDate',
   Cell: ({ value }) => <span className="entry-date">{value}</span>
 }, {
   id: 'location',
@@ -33,10 +33,6 @@ const getColumns = (serialCode) => [...(serialCode ? [serialCodeColumn] : []), {
   Cell: ({ value }) => (
     <textarea className="entry-notes" defaultValue={value} disabled />
   )
-}, {
-  Header: 'Image',
-  accessor: 'image',
-  Cell: ({ value }) => <img className="entry-image" src={value} alt={`bill`}/>
 }]
 
 const defaultPageSize = 5
@@ -45,40 +41,35 @@ const BillEntries = ({ match }) => {
   const { serialCode } = match.params
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
-  const [nPages, setPages] = useState(-1)
   const [page, setPage] = useState(0)
   const [pageSize, setPageSize] = useState(defaultPageSize)
-  const [showPageSize, setShowPageSize] = useState(true)
-  const columns = useCallback(() => getColumns(serialCode), [serialCode])()
+  const columns = useCallback(
+    () => getColumns(serialCode),
+    [serialCode],
+  )()
 
   return (
     <>
       {serialCode && <h1 className="serialCode">Code: {serialCode}</h1>}
       <EntriesMap entries={data} />
       <ReactTable
-        manual
         columns={columns}
         data={data}
-        pages={nPages}
         page={page}
         defaultPageSize={defaultPageSize}
+        pageSizeOptions={[5, 10, 15, 20]}
         loading={loading}
-        showPageSizeOptions={showPageSize}
-        showPageJump={false}
+        noDataText="No bill entries found"
         sortable={false}
         onPageChange={pageIndex => setPage(pageIndex)}
         onPageSizeChange={newPageSize => setPageSize(newPageSize)}
+        minRows={0}
         onFetchData={(state, instance) => {
           setLoading(true)
           fetchEntries(serialCode, pageSize, page)
-            .then(({ rows, pages }) => {
+            .then((rows) => {
               setLoading(false)
               setData(rows)
-              setPages(pages)
-              if (pages === 1 && rows.length <= pageSize) {
-                setShowPageSize(false)
-                setPageSize(rows.length)
-              }
             })
         }}
       />

@@ -22,10 +22,10 @@ L.Marker.prototype.options.icon = DefaultIcon
 const EntriesMap = ({ attribution, entries, url }) => (
   <Map center={[52.499219, 13.425416]} zoom={8}>
     <TileLayer url={url} attribution={attribution} />
-    {entries.map(({ latitude, longitude, serialCode, date }, i) => (
+    {entries.map(({ latitude, longitude, serialCode, currentDate }, i) => (
       <Marker key={`marker-${i}`} position={[latitude, longitude]}>
         <Popup>
-          <b style={{ fontWeight: 'bold' }}>{serialCode}</b>: {date}
+          <b style={{ fontWeight: 'bold' }}>{serialCode}</b>: {currentDate}
         </Popup>
     </Marker>
     ))}

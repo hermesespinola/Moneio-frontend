@@ -14,31 +14,15 @@ export const submitForm = (form, latitude, longitude) => {
     })
   }
 
-  return fetch(`${apiURL}/upload-bill`, {
+  return fetch(`${apiURL}/uploadBill`, {
     method: 'POST',
     body: formData,
   })
 }
 
-export const fetchEntries = async (serialCode, pageSize = 5, page = 0) => {
-  if (!apiURL) {
-    return {
-      pages: Math.ceil(1 / pageSize),
-      rows: [{
-          latitude: 52.496912,
-          longitude: 13.436738,
-          date: 'Sun Feb 10 2019 17:18:06',
-          image: 'https://static.vix.com/es/sites/default/files/styles/large/public/btg/curiosidades.batanga.com/files/Que-figuras-historicas-estan-en-los-billetes-de-Mexico-01.png?itok=kGQNOmbs',
-          notes: 'Este es es benito, sus amiguitos son María, Nezahualcóyotl, Sor Juana, el buen Diego Rivera y Frida Kalho, y como olvidar a Miguel Hidalgo.',
-          serialCode: serialCode || 'abcdefg-1',
-        }]
-    }
-  }
-  let url = `${apiURL}/entries`
-  if (serialCode) {
-    url = `${url}/${serialCode}`
-  }
-  return await fetch(`${url}?pageSize=${pageSize}?page=${page}`, {
+export const fetchEntries = async (serialCode) => {
+  const url = `${apiURL}/billEntries/${serialCode}`
+  return await fetch(`${url}`, {
     method: 'GET',
   })
     .then(res => res.json())
