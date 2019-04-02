@@ -1,10 +1,21 @@
-import React from 'react'
-import L from 'leaflet'
+import React, { useCallback, useRef } from 'react'
+import L, { geoJSON } from 'leaflet'
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
 import '../../styles/EntriesMap.css'
 
 import icon from '../../images/money-icon.png'
 import iconShadow from 'leaflet/dist/images/marker-shadow.png'
+
+const entryToGeoJSON = ({ latitude, longitude, serialCode, currentDate }) => ({
+  type: "Feature",
+  geometry: {
+    type: "Point",
+    coordinates: [longitude, latitude],
+  },
+  properties: {
+    name: `Entry for ${serialCode} at ${currentDate}`
+  }
+})
 
 let DefaultIcon = L.icon({
   iconUrl: icon,
@@ -18,23 +29,50 @@ let DefaultIcon = L.icon({
 
 L.Marker.prototype.options.icon = DefaultIcon
 
+const getGeoJSON = (entries) => {
+  if (!entries || entries.length === 0) {
+    return geoJSON([])
+  }
 
-const EntriesMap = ({ attribution, entries, url }) => (
-  <Map center={[52.499219, 13.425416]} zoom={8}>
-    <TileLayer url={url} attribution={attribution} />
-    {entries.map(({ latitude, longitude, serialCode, currentDate }, i) => (
-      <Marker key={`marker-${i}`} position={[latitude, longitude]}>
-        <Popup>
-          <b style={{ fontWeight: 'bold' }}>{serialCode}</b>: {currentDate}
-        </Popup>
-    </Marker>
-    ))}
-  </Map>
-)
+  return geoJSON(entries.map(entryToGeoJSON))
+}
+
+const EntriesMap = ({ attribution, entries, url }) => {
+  const map = useRef(null)
+
+  useCallback(() => {
+    if (map.current !== null) {
+      const data = getGeoJSON(entries)
+      const bounds = data.getBounds()
+      if (bounds.isValid()) {
+        console.log(bounds)
+        map.current.leafletElement.fitBounds(bounds)
+      }
+    }
+  }, [map, entries])()
+
+  return (
+    <Map
+      boundOptions={{ padding: [50, 50] }}
+      ref={map}
+    >
+      <TileLayer url={url} attribution={attribution} />
+      {console.log(entries) || entries.map(({ latitude, longitude, serialCode, currentDate }, i) => (
+        <Marker key={`marker-${i}`} position={[latitude, longitude]}>
+          <Popup>
+            <b style={{ fontWeight: 'bold' }}>{serialCode}</b>: {currentDate}
+          </Popup>
+      </Marker>
+      ))}
+    </Map>
+  )
+}
 
 EntriesMap.defaultProps = {
-  url: 'https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png',
-  attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attribution">CARTO</a>',
+  url:
+    'https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png',
+  attribution:
+    '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attribution">CARTO</a>',
 }
 
 export default EntriesMap
