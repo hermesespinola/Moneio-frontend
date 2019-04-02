@@ -73,3 +73,5 @@ export const fetchEntries = async (serialCode) => {
   })
   .then(res => res.json())
 }
+
+
