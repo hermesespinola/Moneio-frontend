@@ -15,7 +15,6 @@ class App extends Component {
         <div style={{
           justifyContent: 'center',
           maxWidth: '1280px',
-          width: '80vw',
           marginLeft: 'auto',
           marginRight: 'auto',
         }}>
