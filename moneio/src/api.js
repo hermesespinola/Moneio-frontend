@@ -21,7 +21,9 @@ export const submitForm = (form, latitude, longitude) => {
 }
 
 export const fetchEntries = async (serialCode) => {
-  const url = `${apiURL}/billEntries/${serialCode}`
+  const url = serialCode
+    ? `${apiURL}/billEntries/${serialCode}`
+    : `${apiURL}/billEntries`
   return await fetch(`${url}`, {
     method: 'GET',
   })

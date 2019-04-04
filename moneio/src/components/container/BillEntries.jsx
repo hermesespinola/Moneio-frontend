@@ -63,10 +63,11 @@ const BillEntries = ({ match }) => {
         sortable={false}
         onPageChange={pageIndex => setPage(pageIndex)}
         onPageSizeChange={newPageSize => setPageSize(newPageSize)}
+        pageSize={pageSize}
         minRows={0}
         onFetchData={(state, instance) => {
           setLoading(true)
-          fetchEntries(serialCode, pageSize, page)
+          fetchEntries(serialCode)
             .then((rows) => {
               setLoading(false)
               setData(rows)

@@ -57,7 +57,7 @@ const EntriesMap = ({ attribution, entries, url }) => {
       ref={map}
     >
       <TileLayer url={url} attribution={attribution} />
-      {console.log(entries) || entries.map(({ latitude, longitude, serialCode, currentDate }, i) => (
+      {entries.map(({ latitude, longitude, serialCode, currentDate }, i) => (
         <Marker key={`marker-${i}`} position={[latitude, longitude]}>
           <Popup>
             <b style={{ fontWeight: 'bold' }}>{serialCode}</b>: {currentDate}
