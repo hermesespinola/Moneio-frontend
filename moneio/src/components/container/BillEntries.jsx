@@ -1,6 +1,7 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useMemo, useRef } from 'react'
 import ReactTable from 'react-table'
 import { fetchEntries } from '../../api'
+import { Link } from 'react-router-dom'
 
 import 'react-table/react-table.css'
 import '../../styles/BillEntry.css'
@@ -9,10 +10,17 @@ import EntriesMap from './EntriesMap'
 const serialCodeColumn = {
   Header: 'Serial Code',
   accessor: 'serialCode',
-  Cell: ({ value }) => <span className="entry-serial-code">{value}</span>
+  Cell: ({ value }) => (
+    <Link
+      to={{ pathname: `/explore/${value}`, state: 'reload' }}
+      className="entry-serial-code"
+    >
+      {value}
+    </Link>
+  )
 }
 
-const getColumns = (serialCode) => [...(serialCode ? [serialCodeColumn] : []), {
+const getColumns = (serialCode) => [...(!serialCode ? [serialCodeColumn] : []), {
   Header: 'Date',
   accessor: 'currentDate',
   Cell: ({ value }) => <span className="entry-date">{value}</span>
@@ -37,22 +45,33 @@ const getColumns = (serialCode) => [...(serialCode ? [serialCodeColumn] : []), {
 
 const defaultPageSize = 5
 
-const BillEntries = ({ match }) => {
+const BillEntries = ({ match, location }) => {
   const { serialCode } = match.params
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
   const [page, setPage] = useState(0)
   const [pageSize, setPageSize] = useState(defaultPageSize)
-  const columns = useCallback(
+  const columns = useMemo(
     () => getColumns(serialCode),
     [serialCode],
-  )()
+  )
+  const table = useRef(null)
+
+  useMemo(
+    () => {
+      if (table.current && location.state === 'reload') {
+        table.current.fireFetchData()
+      }
+    },
+    [serialCode]
+  )
 
   return (
     <>
       {serialCode && <h1 className="serialCode">Code: {serialCode}</h1>}
       <EntriesMap entries={data} />
       <ReactTable
+        ref={table}
         columns={columns}
         data={data}
         page={page}

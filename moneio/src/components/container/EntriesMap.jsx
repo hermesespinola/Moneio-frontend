@@ -45,7 +45,6 @@ const EntriesMap = ({ attribution, entries, url }) => {
       const data = getGeoJSON(entries)
       const bounds = data.getBounds()
       if (bounds.isValid()) {
-        console.log(bounds)
         map.current.leafletElement.fitBounds(bounds)
       }
     }
