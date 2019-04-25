@@ -41,11 +41,20 @@ const EntriesMap = ({ attribution, entries, url }) => {
   const map = useRef(null)
 
   useCallback(() => {
-    if (map.current !== null) {
-      const data = getGeoJSON(entries)
-      const bounds = data.getBounds()
-      if (bounds.isValid()) {
-        map.current.leafletElement.fitBounds(bounds)
+    if (map.current && entries) {
+      if (entries.length === 1) {
+        const [entry] = entries
+        map.current.leafletElement.flyTo([entry.latitude, entry.longitude], 8)
+      } else if (entries.length > 1) {
+        console.log(entries)
+        const data = getGeoJSON(entries)
+        console.log(data)
+        const bounds = data.getBounds()
+        console.log(bounds)
+        console.log('bounds valid:', bounds.isValid())
+        if (bounds.isValid()) {
+          map.current.leafletElement.fitBounds(bounds)
+        }
       }
     }
   }, [map, entries])()
@@ -53,6 +62,8 @@ const EntriesMap = ({ attribution, entries, url }) => {
   return (
     <Map
       boundOptions={{ padding: [50, 50] }}
+      center={[0, 0]}
+      zoom={8}
       ref={map}
     >
       <TileLayer url={url} attribution={attribution} />
