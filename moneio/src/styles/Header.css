@@ -106,3 +106,11 @@ body.landing #header {
 #skel-layers-wrapper {
     padding-top: 0;
 }
+
+.badge-offline {
+    margin-left: 145px;
+    padding: 2px 5px;
+    background-color: red;
+    color: white;
+    border-radius: 5px;
+  }
