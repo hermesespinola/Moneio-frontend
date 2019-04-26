@@ -1,10 +1,9 @@
 /* eslint-disable no-restricted-globals */
-/* eslint-disable no-undef */
+/* global workbox */
 workbox.skipWaiting()
 workbox.clientsClaim()
 
 self.indexedDB = self.indexedDB || self.webkitIndexedDB || self.mozIndexedDB || self.OIndexedDB || self.msIndexedDB
-const IDBTransaction = self.IDBTransaction || self.webkitIDBTransaction || self.OIDBTransaction || self.msIDBTransaction
 const dbVersion = 1
 
 const serialize = (request) => {
@@ -34,6 +33,7 @@ const serialize = (request) => {
   return Promise.resolve(serialized)
 }
 
+// TODO: find a way to submit this when back online
 const deserialize = data => Promise.resolve(new Request(data.url, data))
 
 async function createObjectStore(db) {
@@ -56,20 +56,24 @@ async function enqueue(request) {
     console.log("Putting request in IndexedDB");
 
     // Open a transaction to the database
-    var transaction = db.transaction(["bills"], IDBTransaction.READ_WRITE)
+    var transaction = db.transaction(["bills"], 'readwrite')
 
     // get the current queue
-    getQueue(transaction, _q => {
+    getQueue(transaction, (_q) => {
       // write the new queue into indexedDB
       const queue = _q || []
       queue.push(serialized)
-      transaction.objectStore("bills").put(request, "queue")
+      transaction.objectStore("bills").put(queue, "queue")
       getQueue(transaction, newQueue => {
         console.log('Updated queue:', newQueue)
       })
     })
   }
   const dbReq = indexedDB.open('pendingBills', dbVersion)
+
+  dbReq.onupgradeneeded = function (event) {
+    createObjectStore(event.target.result)
+  }
   
   dbReq.onsuccess = event => {
     console.log("Success creating/accessing IndexedDB database")
@@ -82,24 +86,14 @@ async function enqueue(request) {
     if (db.setVersion && db.version !== dbVersion) {
         db.setVersion(dbVersion).onsuccess = () => {
             if (db.createObjectStore) {
-              db.createObjectStore("bills")
-              putRequest(db)
-              // createObjectStore(db).then(putRequest)
+              createObjectStore(db).then(putRequest)
             } else {
               putRequest(db)
             }
         }
-    } else if (db.createObjectStore) {
-      db.createObjectStore("bills")
-      putRequest(db)
-      // createObjectStore(db).then(putRequest)
     } else {
       putRequest(db)
     }
-  }
-
-  request.onupgradeneeded = function (event) {
-    createObjectStore(event.target.result)
   }
 }
 
@@ -128,7 +122,6 @@ self.addEventListener('fetch', (event) => {
         })
       )
     } else {
-      enqueue(event.request)
       event.respondWith(
         enqueue(event.request)
           .then(() => {
