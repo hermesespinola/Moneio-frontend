@@ -50,25 +50,7 @@ function getQueue(transaction, cb) {
   }
 }
 
-async function enqueue(request) {
-  const serialized = await serialize(request)
-  const putRequest = (db) => {
-    console.log("Putting request in IndexedDB");
-
-    // Open a transaction to the database
-    var transaction = db.transaction(["bills"], 'readwrite')
-
-    // get the current queue
-    getQueue(transaction, (_q) => {
-      // write the new queue into indexedDB
-      const queue = _q || []
-      queue.push(serialized)
-      transaction.objectStore("bills").put(queue, "queue")
-      getQueue(transaction, newQueue => {
-        console.log('Updated queue:', newQueue)
-      })
-    })
-  }
+function getDB(callback) {
   const dbReq = indexedDB.open('pendingBills', dbVersion)
 
   dbReq.onupgradeneeded = function (event) {
@@ -86,15 +68,53 @@ async function enqueue(request) {
     if (db.setVersion && db.version !== dbVersion) {
         db.setVersion(dbVersion).onsuccess = () => {
             if (db.createObjectStore) {
-              createObjectStore(db).then(putRequest)
+              createObjectStore(db).then(callback)
             } else {
-              putRequest(db)
+              callback(db)
             }
         }
     } else {
-      putRequest(db)
+      callback(db)
     }
   }
+}
+
+function enqueue(request) {
+  getDB((db) => {
+    console.log("Putting request in IndexedDB")
+
+    // Open a transaction to the database
+    const transaction = db.transaction(["bills"], 'readwrite')
+
+    // get the current queue
+    getQueue(transaction, async (_q) => {
+      // write the new queue into indexedDB
+      const queue = _q || []
+      queue.push(await serialize(request))
+      transaction.objectStore("bills").put(queue, "queue")
+    })
+  })
+}
+
+async function flushQueue() {
+  getDB((db) => {
+    console.log('flushing request queue in IndexedDB')
+
+    // Open a transaction
+    const transaction = db.transaction(['bills'], 'readwrite')
+
+    // get the current queue
+    getQueue(transaction, async (queue) => {
+      if (queue && queue.length) {
+        transaction.objectStore('bills').put([], 'queue')
+        queue.forEach((serializedReq) => {
+          const request = deserialize(serializedReq)
+          fetch(request).then(() => console.log('posted!'))
+        })
+        console.log('queue is now []')
+      }
+    })
+  })
 }
 
 workbox.routing.registerRoute(
@@ -109,6 +129,8 @@ workbox.routing.registerRoute(
   workbox.strategies.networkFirst(),
 )
 
+
+// Handle post and delete request when offline or poor connection
 self.addEventListener('fetch', (event) => {
   if (['POST', 'DELETE'].includes(event.request.method)) {
     if (navigator.onLine) {
@@ -141,6 +163,12 @@ self.addEventListener('fetch', (event) => {
       )
     }
   }
+})
+
+// Handle messages to check the indexedDB queue
+self.addEventListener('message', ({ data, ports: [port] }) => {
+  console.log(`SW received message: ${data}`)
+  flushQueue().then(() => port.postMessage('Queue flushed!.'))
 })
 
 workbox.precaching.precacheAndRoute(self.__precacheManifest || [])
